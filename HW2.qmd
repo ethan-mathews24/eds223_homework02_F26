@@ -147,3 +147,100 @@ block_percent <- df_joined |>
 
 block_percent
 ```
+
+
+### 3. Create at least two visualizations summarizing current conditions
+
+
+```{r}
+# Color dictionary for colors that accurately represent the grade level
+colors_HOLC <- c("A" = "green", "B" = "gold2", "C" = "orange2", "D" = "red1")
+```
+
+```{r}
+# Find and graph the mean of LOWINCPCT
+
+df_joined |>
+
+  group_by(grade) |>
+
+  summarize(mean_pct = mean(LOWINCPCT, na.rm = TRUE) * 100) |>
+
+  drop_na(grade) |>
+
+  ggplot(aes(x = grade, y = mean_pct, fill = grade)) +
+
+  geom_col(col = "black") +
+
+  scale_fill_manual(values = colors_HOLC) +
+
+  theme_bw() +
+
+  labs(
+    title = "Percentage of Low Income Living in\nHome Owners’ Loan Corporation (HOLC) Areas",
+    x = "Home Owners’ Loan Corporation Grade",
+    y = "Average (%)",
+    fill = "HOLC Grade",
+    subtitle = "Figure 1"
+  )
+```
+
+
+```{r}
+# Find and graph the mean of P_PM25
+
+df_joined |>
+
+  group_by(grade) |>
+
+  summarize(mean_pct = mean(P_PM25, na.rm = TRUE)) |>
+
+  ggplot(aes(x = grade, y = mean_pct, fill = grade)) +
+
+  geom_col(col = "black") +
+
+  scale_fill_manual(values = colors_HOLC) +
+
+  theme_bw() +
+
+  labs(
+    title = "Percentile for Particulate Matter 2.5 in\nHome Owners’ Loan Corporation (HOLC) Areas",
+    x = "Home Owners’ Loan Corporation Grade",
+    y = "Average (%)",
+    fill = "HOLC Grade",
+    subtitle = "Figure 2"
+  )
+```
+
+
+```{r}
+# Find and graph the mean of P_LIFEEXPPCT
+
+df_joined |>
+
+  group_by(grade) |>
+
+  summarize(mean_pct = mean(P_LIFEEXPPCT, na.rm = TRUE)) |>
+
+  drop_na(grade) |>
+
+  ggplot(aes(x = grade, y = mean_pct, fill = grade)) +
+
+  geom_col(col = "black") +
+
+  scale_fill_manual(values = colors_HOLC) +
+
+  theme_bw() +
+
+  labs(
+    title = "Percentile for Low Life Expectancy in\nHome Owners’ Loan Corporation (HOLC) Areas",
+    x = "Home Owners’ Loan Corporation Grade",
+    y = "Average (%)",
+    fill = "HOLC Grade",
+    subtitle = "Figure 3"
+  )
+```
+
+### 4. Write a brief paragraph reflecting on these results
+
+Here is my reflection... 
