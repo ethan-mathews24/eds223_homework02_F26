@@ -28,24 +28,32 @@ library(tmap)
 
 # Load in data
 ej <- sf::st_read(here::here(
-    "data", "ejscreen", "EJSCREEN_2023_BG_StatePct_with_AS_CNMI_GU_VI.gdb"))
+  "data",
+  "ejscreen",
+  "EJSCREEN_2023_BG_StatePct_with_AS_CNMI_GU_VI.gdb"
+))
 
 LA_crashes <- sf::st_read(here::here(
-    "data", "SWITRS_LA", "Crashes.csv"))
+  "data",
+  "SWITRS_LA",
+  "Crashes.csv"
+))
 
 map_inequal <- sf::st_read(here::here(
-    "data", "mapping-inequality", "mapping-inequality-los-angeles.json"))
+  "data",
+  "mapping-inequality",
+  "mapping-inequality-los-angeles.json"
+))
 
 
 # Filter EjScreen data
-California_ej <- ej |> 
-    dplyr::filter(ST_ABBREV == "CA")
+California_ej <- ej |>
+  dplyr::filter(ST_ABBREV == "CA")
 
 
-# Filter dataset to a county 
-LA_county_ej <- California_ej |> 
-    dplyr::filter(CNTY_NAME == "Los Angeles County")
-
+# Filter dataset to a county
+LA_county_ej <- California_ej |>
+  dplyr::filter(CNTY_NAME == "Los Angeles County")
 ```
 
 
@@ -70,38 +78,72 @@ map_inequal_transform <- st_transform(map_inequal, crs = st_crs(LA_county_ej))
 
 
 # Check to see CRS's match
-if(st_crs(map_inequal_transform) == st_crs(LA_county_ej)){
+if (st_crs(map_inequal_transform) == st_crs(LA_county_ej)) {
   print("it's a match!")
 } else {
   print("still not a match")
 }
-
 ```
 
 
 ## Part 1. Legacy of redlining in current environmental (in)justice
 
 
+### 1. Create a map of historical redlining neighborhoods
 ```{r}
+#| fig-width: 8
+#| fig-height: 7
 
+# Map of Legacy Redlining in LA County
+
+# Specifying dataframe from filtered data
 tm_shape(LA_county_ej) +
 
-    tm_polygons(
-        lwd = 0.15, 
-        col = "black") +
+  # Specify shape and customize specific attributes to enhance aesthetic
+  tm_polygons(
+    lwd = 0.15,
+    col = "black"
+  ) +
 
-tm_shape(map_inequal, is.main = TRUE) +
+  # Specifying dataframe from filtered data and
+  # set layer as main for map extent
+  tm_shape(map_inequal_transform, is.main = TRUE) +
 
-    tm_polygons(
-        fill = "grade", 
-        lwd = 0.2, 
-        fill.legend = tm_legend(title = "Redline Grade"),
-        fill.scale = tm_scale(values = "-plasma"))  +
+  # Specify shape and customize specific attributes to enhance aesthetic
+  tm_polygons(
+    fill = "grade",
+    lwd = 0.2,
+    fill.legend = tm_legend(title = "Redline Grade"),
+    fill.scale = tm_scale(values = "-plasma")
+  ) +
 
-tm_compass(size = 2, text.size = 0.7, position = c("left", "bottom")) + 
+  # Add a north arrow in the bottom right corner
+  tm_compass(size = 2, text.size = 0.7, position = c("right", "bottom")) +
 
-tm_scalebar(width = 8, text.size = 0.5, position = c("left", "bottom")) + 
+  # Adding a scalebar in the bottom right corner
+  tm_scalebar(width = 8, text.size = 0.5, position = c("right", "bottom")) +
 
-tm_title("HOLC Redlining Grades in Los Angeles County", size = 1.0, position = tm_pos_out("center", "top", pos.h = "left", pos.v = "bottom"))
+  # Add a title above the map, positioned to the left
+  tm_title(
+    "HOLC Redlining Grades in Los Angeles County",
+    size = 1.0,
+    position = tm_pos_out("center", "top", pos.h = "left", pos.v = "bottom")
+  )
+```
 
+
+### 2. Create a table
+
+```{r}
+# Perform left join on the datasets
+df_joined <- st_join(LA_county_ej, map_inequal_transform) |>
+  st_drop_geometry()
+
+# Count the block groups
+block_percent <- df_joined |>
+  count(grade) |>
+  mutate(percent = round(n / sum(n) * 100, 2)) |>
+  select(-n)
+
+block_percent
 ```
