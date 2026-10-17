@@ -158,24 +158,36 @@ colors_HOLC <- c("A" = "green", "B" = "gold2", "C" = "orange2", "D" = "red1")
 ```
 
 ```{r}
+#| fig-width: 8
+#| fig-height: 7
+
 # Find and graph the mean of LOWINCPCT
 
+# Using the previously joined DataFrame
 df_joined |>
 
+  # Grouping by HOLC grade
   group_by(grade) |>
 
+  # Calculating the variable of interest's mean and converting to %
   summarize(mean_pct = mean(LOWINCPCT, na.rm = TRUE) * 100) |>
 
+  # Dropping NA values'
   drop_na(grade) |>
 
+  # Piping in ggplot
   ggplot(aes(x = grade, y = mean_pct, fill = grade)) +
 
+  # Specifying plot geometry
   geom_col(col = "black") +
 
+  # Customizing color scale
   scale_fill_manual(values = colors_HOLC) +
 
+  # Setting theme
   theme_bw() +
 
+  # Customizing titles
   labs(
     title = "Percentage of Low Income Living in\nHome Owners’ Loan Corporation (HOLC) Areas",
     x = "Home Owners’ Loan Corporation Grade",
@@ -187,24 +199,36 @@ df_joined |>
 
 
 ```{r}
+#| fig-width: 8
+#| fig-height: 7
+
 # Find and graph the mean of P_PM25
 
+# Using the previously joined DataFrame
 df_joined |>
 
+  # Grouping by HOLC grade
   group_by(grade) |>
 
+  # Calculating the variable of interest's mean
   summarize(mean_pct = mean(P_PM25, na.rm = TRUE)) |>
 
+  # Dropping NA values'
   drop_na(grade) |>
 
+  # Piping in ggplot
   ggplot(aes(x = grade, y = mean_pct, fill = grade)) +
 
+  # Specifying plot geometry
   geom_col(col = "black") +
 
+  # Customizing color scale
   scale_fill_manual(values = colors_HOLC) +
 
+  # Setting theme
   theme_bw() +
 
+  # Customizing titles
   labs(
     title = "Percentile for Particulate Matter 2.5 in\nHome Owners’ Loan Corporation (HOLC) Areas",
     x = "Home Owners’ Loan Corporation Grade",
@@ -216,24 +240,36 @@ df_joined |>
 
 
 ```{r}
+#| fig-width: 8
+#| fig-height: 7
+
 # Find and graph the mean of P_LIFEEXPPCT
 
+# Using the previously joined DataFrame
 df_joined |>
 
+  # Grouping by HOLC grade
   group_by(grade) |>
 
+  # Calculating the variable of interest's mean
   summarize(mean_pct = mean(P_LIFEEXPPCT, na.rm = TRUE)) |>
 
+  # Dropping NA values'
   drop_na(grade) |>
 
+  # Piping in ggplot
   ggplot(aes(x = grade, y = mean_pct, fill = grade)) +
 
+  # Specifying plot geometry
   geom_col(col = "black") +
 
+  # Customizing color scale
   scale_fill_manual(values = colors_HOLC) +
 
+  # Setting theme
   theme_bw() +
 
+  # Customizing titles
   labs(
     title = "Percentile for Low Life Expectancy in\nHome Owners’ Loan Corporation (HOLC) Areas",
     x = "Home Owners’ Loan Corporation Grade",
