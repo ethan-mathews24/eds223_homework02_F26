@@ -7,12 +7,12 @@
 </p>
 
 
-### Purpose of this Repository
+## Purpose of this Repository
 
 This repository contains Homework 1 for EDS 223: Geospatial Analysis & Remote Sensing. The analysis explores the legacy of historical redlining in Los Angeles using Home Owners’ Loan Corporation (HOLC) grade designations. First, it combines HOLC data with the EPA’s EJScreen data at the census block group level to examine how redlining relates to present-day environmental justice conditions. Second, it uses pedestrian and bicycle crash and fatality data from the California Highway Patrol’s Statewide Integrated Traffic Records System (SWITRS) from 2020 to 2025, producing maps that show their spatial relationship to historical HOLC grades.
 
 
-### Package Dependencies
+## Package Dependencies
 
 * `tidyverse`
 
@@ -25,7 +25,7 @@ This repository contains Homework 1 for EDS 223: Geospatial Analysis & Remote Se
 * `gt`
 
 
-### File Structure
+## File Structure
 
 ```
 EDS223-HW2
@@ -40,19 +40,19 @@ EDS223-HW2
 ```
 
 
-### Repository Contents
+## Repository Contents
 
 The `data` folder contains the data used for this analysis. 
 
 The `images` folder contains images that were used for the README and results section.
 
 
-### Results
+## Results
 
 INSERT MAPS' HERE
 
 
-### Data Information/Access
+## Data Information/Access
 
 #### EJSCREEN:
 
@@ -77,18 +77,18 @@ The Statewide Integrated Traffice Records System (SWITRS) database collects and 
 For this analysis, we worked with crash reports from 2020- 2025.
 
 
-### Authors and Contributors 
+## Authors and Contributors 
 
 Author: [Ethan Mathews](https://github.com/ethan-mathews24)
 
 Contributor: [Annie Adams](https://github.com/annieradams)
 
 
-### Citations
+## Citations
 
-Public Environmental Data Partners. (2025). *EJScreen: Environmental Justice Screening and Mapping Tool*. Originally developed by U.S. Environmental Protection Agency, accessed October 15, 2026,  pedp-ejscreen.azurewebsites.net/.
+Public Environmental Data Partners. (2025). *EJScreen: Environmental Justice Screening and Mapping Tool*. Originally developed by U.S. Environmental Protection Agency, accessed October 15, 2026, pedp-ejscreen.azurewebsites.net/.
 
-Robert K. Nelson, LaDale Winling, Richard Marciano, Nathan Connolly, et al., “Mapping Inequality,” American Panorama, ed. Robert K. Nelson and Edward L. Ayers, accessed October 15, 2023, https://dsl.richmond.edu/panorama/redlining/.
+Robert K. Nelson, LaDale Winling, Richard Marciano, Nathan Connolly, et al. (2026) *Mapping Inequality, Redlining in New Deal America*, accessed October 15, 2023, https://dsl.richmond.edu/panorama/redlining/.
 
 Transportation Injury Mapping System (TIMS). (2026). *Safe Transportation Research and Education Center*, University of California, Berkeley, https://tims.berkeley.edu/about.php.
 
