@@ -1,6 +1,6 @@
 # Exploring Patterns of Environmental Justice
 
-![](images/INJUSTICE.png)
+![](images/EDS223.png)
 
 <p align = "center">
 <a href = "https://science.nasa.gov/mission/landsat/">Your Name in LANDSAT</a>
@@ -21,6 +21,8 @@ This repository contains Homework 1 for EDS 223: Geospatial Analysis & Remote Se
 * `here`
 
 * `tmap`
+
+* `gt`
 
 
 ### File Structure

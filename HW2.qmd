@@ -24,7 +24,7 @@ library(tidyverse)
 library(here)
 library(sf)
 library(tmap)
-
+library(gt)
 
 # Load in data
 ej <- sf::st_read(here::here(
@@ -45,11 +45,9 @@ map_inequal <- sf::st_read(here::here(
   "mapping-inequality-los-angeles.json"
 ))
 
-
 # Filter EjScreen data
 California_ej <- ej |>
   dplyr::filter(ST_ABBREV == "CA")
-
 
 # Filter dataset to a county
 LA_county_ej <- California_ej |>
@@ -68,23 +66,36 @@ st_crs(LA_county_ej)
 st_crs(crashes)
 st_crs(map_inequal)
 
+# Check to see CRS's match
+if (st_crs(map_inequal) == st_crs(LA_county_ej)) {
+  print("it's a match!")
+} else {
+  warning("still not a match")
+}
 
 # Quick test to see
 st_crs(LA_county_ej) == st_crs(map_inequal)
 
-
 # Change coorindate systems
 map_inequal_transform <- st_transform(map_inequal, crs = st_crs(LA_county_ej))
-
 
 # Check to see CRS's match
 if (st_crs(map_inequal_transform) == st_crs(LA_county_ej)) {
   print("it's a match!")
 } else {
-  print("still not a match")
+  warning("still not a match")
 }
 ```
 
+```{r}
+#| echo: true
+#| warning: false
+#| message: false
+#| results: hide
+
+# Color dictionary for colors that accurately represent the grade level
+colors_HOLC <- c("A" = "green", "B" = "gold2", "C" = "orange2", "D" = "red1")
+```
 
 ## Part 1. Legacy of redlining in current environmental (in)justice
 
@@ -96,32 +107,25 @@ if (st_crs(map_inequal_transform) == st_crs(LA_county_ej)) {
 
 # Map of Legacy Redlining in LA County
 
-# Specifying dataframe from filtered data
-tm_shape(LA_county_ej) +
-
-  # Specify shape and customize specific attributes to enhance aesthetic
-  tm_polygons(
-    lwd = 0.15,
-    col = "black"
-  ) +
-
-  # Specifying dataframe from filtered data and
-  # set layer as main for map extent
-  tm_shape(map_inequal_transform, is.main = TRUE) +
+# Specifying dataframe from filtered data and
+tm_shape(map_inequal_transform) +
 
   # Specify shape and customize specific attributes to enhance aesthetic
   tm_polygons(
     fill = "grade",
     lwd = 0.2,
     fill.legend = tm_legend(title = "Redline Grade"),
-    fill.scale = tm_scale(values = "-plasma")
+    fill.scale = tm_scale(values = colors_HOLC)
   ) +
 
-  # Add a north arrow in the bottom right corner
-  tm_compass(size = 2, text.size = 0.7, position = c("right", "bottom")) +
+  # Adding an appropriate basemap
+  tm_basemap("Esri.WorldGrayCanvas") +
 
-  # Adding a scalebar in the bottom right corner
-  tm_scalebar(width = 8, text.size = 0.5, position = c("right", "bottom")) +
+  # Add a north arrow in the bottom left corner
+  tm_compass(size = 2, text.size = 0.7, position = c("left", "bottom")) +
+
+  # Adding a scalebar in the bottom left corner
+  tm_scalebar(width = 8, text.size = 0.5, position = c("left", "bottom")) +
 
   # Add a title above the map, positioned to the left
   tm_title(
@@ -137,25 +141,44 @@ tm_shape(LA_county_ej) +
 ```{r}
 # Perform left join on the datasets
 df_joined <- st_join(LA_county_ej, map_inequal_transform) |>
+
+  # Remove geometry to reduce computational load
   st_drop_geometry()
+
 
 # Count the block groups
 block_percent <- df_joined |>
-  count(grade) |>
-  mutate(percent = round(n / sum(n) * 100, 2)) |>
-  select(-n)
 
-block_percent
+  # Group by grade
+  count(grade) |>
+
+  # Calculate percent and round percent to two decimal places
+  mutate(Percent = round(n / sum(n) * 100, 2)) |>
+
+  # Rename "grade" column to "Grade"
+  rename(Grade = grade) |>
+
+  # Remove N column
+  select(-n)
+```
+
+```{r}
+# Create gt summary table
+block_percent |>
+
+  # Pipe in gt summary table function
+  gt() |>
+
+  # Customize title and subtitle
+  tab_header(
+    title = "Percentage of census block groups within each HOLC grade",
+    subtitle = md("*In LA County*")
+  )
 ```
 
 
 ### 3. Create at least two visualizations summarizing current conditions
 
-
-```{r}
-# Color dictionary for colors that accurately represent the grade level
-colors_HOLC <- c("A" = "green", "B" = "gold2", "C" = "orange2", "D" = "red1")
-```
 
 ```{r}
 #| fig-width: 8
@@ -189,7 +212,7 @@ df_joined |>
 
   # Customizing titles
   labs(
-    title = "Percentage of Low Income Living in\nHome Owners’ Loan Corporation (HOLC) Areas",
+    title = "Percentage of Low Income Living in HOLC Areas",
     x = "Home Owners’ Loan Corporation Grade",
     y = "Average (%)",
     fill = "HOLC Grade",
@@ -230,7 +253,7 @@ df_joined |>
 
   # Customizing titles
   labs(
-    title = "Percentile for Particulate Matter 2.5 in\nHome Owners’ Loan Corporation (HOLC) Areas",
+    title = "Percentile for Particulate Matter 2.5 in HOLC Areas",
     x = "Home Owners’ Loan Corporation Grade",
     y = "Average (%)",
     fill = "HOLC Grade",
@@ -271,7 +294,7 @@ df_joined |>
 
   # Customizing titles
   labs(
-    title = "Percentile for Low Life Expectancy in\nHome Owners’ Loan Corporation (HOLC) Areas",
+    title = "Percentile for Low Life Expectancy in HOLC Areas",
     x = "Home Owners’ Loan Corporation Grade",
     y = "Average (%)",
     fill = "HOLC Grade",
@@ -288,6 +311,11 @@ Averaging the percent low income (LOWINCPCT), the PM2.5 percentile (P_PM25), and
 
 
 ```{r}
+#| echo: true
+#| warning: false
+#| message: false
+#| results: hide
+
 # Exploratory
 unique(crashes$PEDESTRIAN_ACCIDENT)
 unique(crashes$BICYCLE_ACCIDENT)
@@ -312,6 +340,7 @@ sum(crashes$POINT_X == "NA")
 # Filter data
 crash_filtered <- crashes |>
 
+  # Select specific rows to reduce computational load
   select(
     COLLISION_DATE,
     BICYCLE_ACCIDENT,
@@ -324,34 +353,43 @@ crash_filtered <- crashes |>
     PEDESTRIAN_ACCIDENT
   ) |>
 
+  # Read date column as a date
   mutate(DATE = as.Date(COLLISION_DATE)) |>
 
+  # Create year column
   mutate(YEAR = as.integer(year(DATE))) |>
 
+  # Filter years
   filter(YEAR >= 2020 & YEAR <= 2025) |>
 
   filter(PEDESTRIAN_ACCIDENT == "Y" | BICYCLE_ACCIDENT == "Y") |>
 
+  # Read POINT_X column as a numerical value
   mutate(POINT_X = as.numeric(POINT_X)) |>
 
+  # Read POINT_Y column as a numerical value
   mutate(POINT_Y = as.numeric(POINT_Y)) |>
 
+  # Remove NA values'
   drop_na(POINT_X, POINT_Y) |>
 
+  # Create coordinates from POINT_X and POINT_Y
   st_as_sf(coords = c("POINT_X", "POINT_Y"), crs = "EPSG:4326") |>
 
+  # Change new DataFrame into having the same crs
   st_transform(st_crs(map_inequal_transform))
+```
 
 
+```{r}
 # Check to see if coordinate system matches
 st_crs(crash_filtered) == st_crs(map_inequal_transform)
-
 
 # Check to see CRS's match
 if (st_crs(map_inequal_transform) == st_crs(crash_filtered)) {
   print("it's a match!")
 } else {
-  print("still not a match")
+  warning("still not a match")
 }
 ```
 
@@ -363,131 +401,63 @@ joined_crash_inequal <- st_join(crash_filtered, map_inequal_transform)
 
 
 ```{r}
+# Create new DataFrame
 plot_crash_inequal <- joined_crash_inequal |>
 
+  # Remove geometry to reduce computational load
   st_drop_geometry() |>
 
+  # Remove NA values'
+  drop_na() |>
+
+  # Group by HOLC grade
   group_by(grade) |>
 
-  # Need to change the data type to be seen as numerical values
-  mutate(
-    COUNT_PED_KILLED = as.numeric(COUNT_PED_KILLED),
-    COUNT_BICYCLIST_KILLED = as.numeric(COUNT_BICYCLIST_KILLED)
-  ) |>
-
+  # Summarize total accidents and fatalities
   summarize(
-    BIKE_CRASH = sum(BICYCLE_ACCIDENT == "Y", na.rm = TRUE),
-    BIKE_FATAL = sum(COUNT_BICYCLIST_KILLED != 0, na.rm = TRUE),
-    PED_CRASH = sum(PEDESTRIAN_ACCIDENT == "Y", na.rm = TRUE),
-    PED_FATAL = sum(COUNT_PED_KILLED != 0, na.rm = TRUE)
+    TOTAL = sum(
+      PEDESTRIAN_ACCIDENT == "Y",
+      BICYCLE_ACCIDENT == "Y",
+      as.integer(COUNT_PED_KILLED) != 0,
+      as.integer(COUNT_BICYCLIST_KILLED) != 0
+    ),
+    na.rm = TRUE
   ) |>
 
-  mutate(
-    BIKE_CRASH_PCT = BIKE_CRASH / nrow(joined_crash_inequal) * 100,
-    BIKE_FATAL_PCT = BIKE_FATAL / nrow(joined_crash_inequal) * 100,
-    PED_CRASH_PCT = PED_CRASH / nrow(joined_crash_inequal) * 100,
-    PED_FATAL_PCT = PED_FATAL / nrow(joined_crash_inequal) * 100
-  ) |>
-
-  drop_na()
+  # Turn total into a percent for each grade
+  mutate(TOTAL_PCT = TOTAL / sum(TOTAL) * 100)
 ```
 
 
 ```{r}
-# Plot Bike Crash in HOLC Area
+#| fig-width: 8
+#| fig-height: 7
 
-ggplot(plot_crash_inequal, aes(x = grade, y = BIKE_CRASH_PCT, fill = grade)) +
-
-  # Specifying plot geometry
-  geom_col(col = "black") +
-
-  # Customizing color scale
-  scale_fill_manual(values = colors_HOLC) +
-
-  # Setting theme
-  theme_bw() +
-
-  # Customizing titles
-  labs(
-    title = "Percent of Bike Crashes in\nHome Owners’ Loan Corporation (HOLC) Areas",
-    x = "Home Owners’ Loan Corporation Grade",
-    y = "Average (%)",
-    fill = "HOLC Grade",
-    subtitle = "In Los Angeles County"
-  )
-```
-
-
-```{r}
-# Plot Fatal Bike Crash in HOLC Area
-
-ggplot(plot_crash_inequal, aes(x = grade, y = BIKE_FATAL_PCT, fill = grade)) +
+# Plot based on total % of observations within redlined neighborhoods
+ggplot(plot_crash_inequal, aes(x = grade, y = TOTAL_PCT, fill = grade)) +
 
   # Specifying plot geometry
   geom_col(col = "black") +
 
-  # Customizing color scale
+  # Customzing color scale
   scale_fill_manual(values = colors_HOLC) +
 
-  # Setting theme
+  # Customizing theme
   theme_bw() +
 
   # Customizing titles
   labs(
-    title = "Percent of Fatal Bike Crashes in\nHome Owners’ Loan Corporation (HOLC) Areas",
+    title = "Bike and Pedestrian Incidents by HOLC Grade",
+    subtitle = "In Los Angeles County (2020–2025)",
     x = "Home Owners’ Loan Corporation Grade",
-    y = "Average (%)",
-    fill = "HOLC Grade",
-    subtitle = "In Los Angeles County"
+    y = "Percent (%)",
+    fill = "HOLC Grade"
   )
 ```
 
 
-```{r}
-# Plot Ped Incident in HOLC Area
-
-ggplot(plot_crash_inequal, aes(x = grade, y = PED_CRASH_PCT, fill = grade)) +
-
-  # Specifying plot geometry
-  geom_col(col = "black") +
-
-  # Customizing color scale
-  scale_fill_manual(values = colors_HOLC) +
-
-  # Setting theme
-  theme_bw() +
-
-  # Customizing titles
-  labs(
-    title = "Percent of Pedestrian Incidents in\nHome Owners’ Loan Corporation (HOLC) Areas",
-    x = "Home Owners’ Loan Corporation Grade",
-    y = "Average (%)",
-    fill = "HOLC Grade",
-    subtitle = "In Los Angeles County"
-  )
-```
 
 
-```{r}
-# Plot Fatal Ped Incident in HOLC Area
 
-ggplot(plot_crash_inequal, aes(x = grade, y = PED_FATAL_PCT, fill = grade)) +
 
-  # Specifying plot geometry
-  geom_col(col = "black") +
 
-  # Customizing color scale
-  scale_fill_manual(values = colors_HOLC) +
-
-  # Setting theme
-  theme_bw() +
-
-  # Customizing titles
-  labs(
-    title = "Percent of Fatal Pedestrian Incidents in\nHome Owners’ Loan Corporation (HOLC) Areas",
-    x = "Home Owners’ Loan Corporation Grade",
-    y = "Average (%)",
-    fill = "HOLC Grade",
-    subtitle = "In Los Angeles County"
-  )
-```
