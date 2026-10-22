@@ -49,7 +49,7 @@ The `images` folder contains images that were used for the README and results se
 
 ## Results
 
-INSERT MAPS' HERE
+![](images/HOLC.png)
 
 
 ## Data Information/Access
@@ -91,9 +91,4 @@ Public Environmental Data Partners. (2025). *EJScreen: Environmental Justice Scr
 Robert K. Nelson, LaDale Winling, Richard Marciano, Nathan Connolly, et al. (2026) *Mapping Inequality, Redlining in New Deal America*, accessed October 15, 2023, https://dsl.richmond.edu/panorama/redlining/.
 
 Transportation Injury Mapping System (TIMS). (2026). *Safe Transportation Research and Education Center*, University of California, Berkeley, https://tims.berkeley.edu/about.php.
-
-
-
-
-
 

@@ -55,25 +55,26 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="exploring-patterns-of-environmental-justice" class="level1">
 <h1>Exploring Patterns of Environmental Justice</h1>
-<p><img src="images/INJUSTICE.png" class="img-fluid"></p>
+<p><img src="images/EDS223.png" class="img-fluid"></p>
 <p align="center">
 <a href="https://science.nasa.gov/mission/landsat/">Your Name in LANDSAT</a>
 </p>
-<section id="purpose-of-this-repository" class="level3">
-<h3 class="anchored" data-anchor-id="purpose-of-this-repository">Purpose of this Repository</h3>
+<section id="purpose-of-this-repository" class="level2">
+<h2 class="anchored" data-anchor-id="purpose-of-this-repository">Purpose of this Repository</h2>
 <p>This repository contains Homework 1 for EDS 223: Geospatial Analysis &amp; Remote Sensing. The analysis explores the legacy of historical redlining in Los Angeles using Home Owners’ Loan Corporation (HOLC) grade designations. First, it combines HOLC data with the EPA’s EJScreen data at the census block group level to examine how redlining relates to present-day environmental justice conditions. Second, it uses pedestrian and bicycle crash and fatality data from the California Highway Patrol’s Statewide Integrated Traffic Records System (SWITRS) from 2020 to 2025, producing maps that show their spatial relationship to historical HOLC grades.</p>
 </section>
-<section id="package-dependencies" class="level3">
-<h3 class="anchored" data-anchor-id="package-dependencies">Package Dependencies</h3>
+<section id="package-dependencies" class="level2">
+<h2 class="anchored" data-anchor-id="package-dependencies">Package Dependencies</h2>
 <ul>
 <li><p><code>tidyverse</code></p></li>
 <li><p><code>sf</code></p></li>
 <li><p><code>here</code></p></li>
 <li><p><code>tmap</code></p></li>
+<li><p><code>gt</code></p></li>
 </ul>
 </section>
-<section id="file-structure" class="level3">
-<h3 class="anchored" data-anchor-id="file-structure">File Structure</h3>
+<section id="file-structure" class="level2">
+<h2 class="anchored" data-anchor-id="file-structure">File Structure</h2>
 <pre><code>EDS223-HW2
 ├── data
 │   ├── ejscreen
@@ -84,42 +85,44 @@ ul.task-list li input[type="checkbox"] {
 ├── images
 └── README.md</code></pre>
 </section>
-<section id="repository-contents" class="level3">
-<h3 class="anchored" data-anchor-id="repository-contents">Repository Contents</h3>
+<section id="repository-contents" class="level2">
+<h2 class="anchored" data-anchor-id="repository-contents">Repository Contents</h2>
 <p>The <code>data</code> folder contains the data used for this analysis.</p>
 <p>The <code>images</code> folder contains images that were used for the README and results section.</p>
 </section>
-<section id="results" class="level3">
-<h3 class="anchored" data-anchor-id="results">Results</h3>
-<p>INSERT MAPS’ HERE</p>
+<section id="results" class="level2">
+<h2 class="anchored" data-anchor-id="results">Results</h2>
+<p><img src="images/HOLC.png" class="img-fluid"></p>
 </section>
-<section id="data-informationaccess" class="level3">
-<h3 class="anchored" data-anchor-id="data-informationaccess">Data Information/Access</h3>
+<section id="data-informationaccess" class="level2">
+<h2 class="anchored" data-anchor-id="data-informationaccess">Data Information/Access</h2>
 <section id="ejscreen" class="level4">
-<h4 class="anchored" data-anchor-id="ejscreen">EJSCREEN</h4>
+<h4 class="anchored" data-anchor-id="ejscreen">EJSCREEN:</h4>
 <p>The data used for this analysis was from the United States Environmental Protection Agency’s previous EJScreen: Environmental Justice Screening and Mapping Tool found <a href="https://www.epa.gov/ejscreen">here</a>.</p>
 <p>The tool, when in existence, was intended to support research and policy goals. It was shared with the public to be more transparent about how we consider environmental justice in our work and to assist stakeholders in making informed decisions about pursuing environmental justice.</p>
 <p>While the original tool is no longer available, an unofficial version can be found <a href="https://pedp-ejscreen.azurewebsites.net/">here</a>.</p>
 </section>
 <section id="holc-redlining" class="level4">
-<h4 class="anchored" data-anchor-id="holc-redlining">HOLC Redlining</h4>
+<h4 class="anchored" data-anchor-id="holc-redlining">HOLC Redlining:</h4>
 <p>A team of researchers, led by the <a href="https://dsl.richmond.edu/">Digital Scholarship Lab</a> at the University of Richmond have digitized maps and information from the HOLC as part of the <a href="https://dsl.richmond.edu/panorama/redlining/#loc=5/39.1/-94.58">Mapping Inequality project</a>.</p>
 <p>For this analysis, we worked with maps of HOLC grade designations for Los Angeles. Information on the data can be found <a href="https://dsl.richmond.edu/panorama/redlining/data">here</a>.</p>
 </section>
 <section id="bike-and-pedestrian-crash-reports" class="level4">
-<h4 class="anchored" data-anchor-id="bike-and-pedestrian-crash-reports">Bike and Pedestrian Crash Reports</h4>
+<h4 class="anchored" data-anchor-id="bike-and-pedestrian-crash-reports">Bike and Pedestrian Crash Reports:</h4>
 <p>The Statewide Integrated Traffice Records System (SWITRS) database collects and processes data gathered from collision scenes. The data is hosted on the Transportation Information Mapping System (TIMS) which was developed by UC Berkley SafeTREC, accessed <a href="https://tims.berkeley.edu/">here</a>. The metadata can be found on the <a href="https://tims.berkeley.edu/help/crashdata/switrs-codebook.php">SWITRS Codebook</a>.</p>
 <p>For this analysis, we worked with crash reports from 2020- 2025.</p>
 </section>
 </section>
-<section id="authors-and-contributors" class="level3">
-<h3 class="anchored" data-anchor-id="authors-and-contributors">Authors and Contributors</h3>
+<section id="authors-and-contributors" class="level2">
+<h2 class="anchored" data-anchor-id="authors-and-contributors">Authors and Contributors</h2>
 <p>Author: <a href="https://github.com/ethan-mathews24">Ethan Mathews</a></p>
 <p>Contributor: <a href="https://github.com/annieradams">Annie Adams</a></p>
 </section>
-<section id="citations" class="level3">
-<h3 class="anchored" data-anchor-id="citations">Citations</h3>
-<p>Public Environmental Data Partners. (2025). <em>EJScreen: Environmental Justice Screening and Mapping Tool</em>. Originally developed by U.S. Environmental Protection Agency, pedp-ejscreen.azurewebsites.net/. Accessed October 15, 2026.</p>
+<section id="citations" class="level2">
+<h2 class="anchored" data-anchor-id="citations">Citations</h2>
+<p>Public Environmental Data Partners. (2025). <em>EJScreen: Environmental Justice Screening and Mapping Tool</em>. Originally developed by U.S. Environmental Protection Agency, accessed October 15, 2026, pedp-ejscreen.azurewebsites.net/.</p>
+<p>Robert K. Nelson, LaDale Winling, Richard Marciano, Nathan Connolly, et al.&nbsp;(2026) <em>Mapping Inequality, Redlining in New Deal America</em>, accessed October 15, 2023, https://dsl.richmond.edu/panorama/redlining/.</p>
+<p>Transportation Injury Mapping System (TIMS). (2026). <em>Safe Transportation Research and Education Center</em>, University of California, Berkeley, https://tims.berkeley.edu/about.php.</p>
 </section>
 </section>
 

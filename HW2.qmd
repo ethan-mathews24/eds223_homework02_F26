@@ -1,6 +1,6 @@
 ---
 title: "Homework #2 for Geospatial Analysis & Remote Sensing (EDS223 - Fall 2026)"
-date: 10-15-2026
+date: 10-23-2026
 format:
   pdf:
     toc: false
@@ -94,7 +94,12 @@ if (st_crs(map_inequal_transform) == st_crs(LA_county_ej)) {
 #| results: hide
 
 # Color dictionary for colors that accurately represent the grade level
-colors_HOLC <- c("A" = "green", "B" = "gold2", "C" = "orange2", "D" = "red1")
+colors_HOLC <- c(
+  "A" = "forestgreen",
+  "B" = "dodgerblue3",
+  "C" = "goldenrod3",
+  "D" = "firebrick3"
+)
 ```
 
 ## Part 1. Legacy of redlining in current environmental (in)justice
@@ -102,8 +107,8 @@ colors_HOLC <- c("A" = "green", "B" = "gold2", "C" = "orange2", "D" = "red1")
 
 ### 1. Create a map of historical redlining neighborhoods
 ```{r}
-#| fig-width: 8
-#| fig-height: 7
+#| fig-width: 7
+#| fig-height: 6
 
 # Map of Legacy Redlining in LA County
 
@@ -119,7 +124,7 @@ tm_shape(map_inequal_transform) +
   ) +
 
   # Adding an appropriate basemap
-  tm_basemap("Esri.WorldGrayCanvas") +
+  tm_basemap("OpenStreetMap") +
 
   # Add a north arrow in the bottom left corner
   tm_compass(size = 2, text.size = 0.7, position = c("left", "bottom")) +
@@ -151,7 +156,7 @@ block_percent <- df_joined |>
   # Group by grade
   count(grade) |>
 
-  # Calculate percent and round percent to two decimal places
+  # Calculate percent and round to two decimal places
   mutate(Percent = round(n / sum(n) * 100, 2)) |>
 
   # Rename "grade" column to "Grade"
@@ -178,8 +183,8 @@ block_percent |>
 
 ### 3. Create at least two visualizations summarizing current conditions
 ```{r}
-#| fig-width: 8
-#| fig-height: 7
+#| fig-width: 7
+#| fig-height: 6
 
 # Find and graph the mean of LOWINCPCT
 
@@ -209,7 +214,7 @@ df_joined |>
 
   # Customizing titles
   labs(
-    title = "Percentage of Low Income Living in HOLC Areas",
+    title = "Average Percentage of Low Income Living in HOLC Areas",
     x = "Home Owners’ Loan Corporation Grade",
     y = "Average (%)",
     fill = "HOLC Grade",
@@ -219,8 +224,8 @@ df_joined |>
 
 
 ```{r}
-#| fig-width: 8
-#| fig-height: 7
+#| fig-width: 7
+#| fig-height: 6
 
 # Find and graph the mean of P_PM25
 
@@ -250,9 +255,9 @@ df_joined |>
 
   # Customizing titles
   labs(
-    title = "Percentile for Particulate Matter 2.5 in HOLC Areas",
+    title = "Average Percentile for Particulate Matter 2.5 in HOLC Areas",
     x = "Home Owners’ Loan Corporation Grade",
-    y = "Average (%)",
+    y = "Average Percentile",
     fill = "HOLC Grade",
     subtitle = "Figure 2"
   )
@@ -260,8 +265,8 @@ df_joined |>
 
 
 ```{r}
-#| fig-width: 8
-#| fig-height: 7
+#| fig-width: 7
+#| fig-height: 6
 
 # Find and graph the mean of P_LIFEEXPPCT
 
@@ -291,9 +296,9 @@ df_joined |>
 
   # Customizing titles
   labs(
-    title = "Percentile for Low Life Expectancy in HOLC Areas",
+    title = "Average Percentile for Low Life Expectancy in HOLC Areas",
     x = "Home Owners’ Loan Corporation Grade",
-    y = "Average (%)",
+    y = "Average Percentile",
     fill = "HOLC Grade",
     subtitle = "Figure 3"
   )
@@ -316,6 +321,7 @@ unique(crashes$BICYCLE_ACCIDENT)
 unique(crashes$ACCIDENT_YEAR)
 unique(crashes$COUNT_BICYCLIST_KILLED)
 unique(crashes$COUNT_PED_KILLED)
+
 
 summary(crashes$POINT_X)
 summary(crashes$POINT_Y)
@@ -356,6 +362,7 @@ crash_filtered <- crashes |>
   # Filter years
   filter(YEAR >= 2020 & YEAR <= 2025) |>
 
+  # Filter to rows with accidents
   filter(PEDESTRIAN_ACCIDENT == "Y" | BICYCLE_ACCIDENT == "Y") |>
 
   # Read POINT_X column as a numerical value
@@ -420,8 +427,8 @@ plot_crash_inequal <- joined_crash_inequal |>
 ```
 
 ```{r}
-#| fig-width: 8
-#| fig-height: 7
+#| fig-width: 7
+#| fig-height: 6
 
 # Plot based on total % of observations within redlined neighborhoods
 ggplot(plot_crash_inequal, aes(x = grade, y = TOTAL_PCT, fill = grade)) +
@@ -437,7 +444,7 @@ ggplot(plot_crash_inequal, aes(x = grade, y = TOTAL_PCT, fill = grade)) +
 
   # Customizing titles
   labs(
-    title = "Bike and Pedestrian Incidents by HOLC Grade in LA County (2020–2025)",
+    title = "Bike and Pedestrian Incidents and Fatalities by HOLC Grade (2020–2025)",
     subtitle = "Figure 4",
     x = "Home Owners’ Loan Corporation Grade",
     y = "Percent (%)",
@@ -446,4 +453,4 @@ ggplot(plot_crash_inequal, aes(x = grade, y = TOTAL_PCT, fill = grade)) +
 ```
 
 Analysis: 
-Figure 4 shows a clear disparity in bike and pedestrian crashes, including fatal crashes, across HOLC grades. Of all bike and pedestrian crashes recorded within HOLC-graded areas of Los Angeles County from 2020 to 2025, roughly 86% occurred in Grade C and D neighborhoods, while just over 2% occurred in Grade A neighborhoods. This pattern aligns with the long-term effects of redlining, where neighborhoods that were poorly rated were denied funds for community investment, which resulted in inadequate infrastructure such as sidewalks, crosswalks, and bike lanes. As a result, residents of historically redlined neighborhoods face greater danger while partaking in simple everyday activities such as walking or riding a bike. Based on this analysis, further research into infrastructure and traffic conditions in these neighborhoods could support targeted safety investments. 
+Figure 4 shows a clear disparity in bike and pedestrian crashes, including fatal crashes, across HOLC grades. Of all bike and pedestrian crashes recorded within HOLC-graded areas of Los Angeles County from 2020 to 2025, roughly 86% occurred in Grade C and D neighborhoods, while just over 2% occurred in Grade A neighborhoods. This pattern aligns with the long-term effects of redlining, where neighborhoods that were poorly rated were denied funds for community investment, which resulted in inadequate infrastructure such as sidewalks, crosswalks, and bike lanes. As a result, residents of historically redlined neighborhoods face greater danger while partaking in everyday activities such as walking or riding a bike. Based on this analysis, further research into infrastructure and traffic conditions in these neighborhoods would help support targeted safety investments. 
