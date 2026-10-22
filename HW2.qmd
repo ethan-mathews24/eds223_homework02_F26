@@ -137,7 +137,6 @@ tm_shape(map_inequal_transform) +
 
 
 ### 2. Create a table
-
 ```{r}
 # Perform left join on the datasets
 df_joined <- st_join(LA_county_ej, map_inequal_transform) |>
@@ -178,8 +177,6 @@ block_percent |>
 
 
 ### 3. Create at least two visualizations summarizing current conditions
-
-
 ```{r}
 #| fig-width: 8
 #| fig-height: 7
@@ -303,13 +300,10 @@ df_joined |>
 ```
 
 ### 4. Write a brief paragraph reflecting on these results
-
 Averaging the percent low income (LOWINCPCT), the PM2.5 percentile (P_PM25), and the low life expectancy percentile (P_LIFEEXPPCT) across census block groups in each HOLC grade shows a consistent pattern that conditions worsen steadily from Grade A to Grade D. In Figure 1, block groups in Grade D areas average nearly 40% low-income residents, compared with about 15% in Grade A areas. Figure 3 shows a similar gradient, with Grade D areas averaging around the 55th percentile for low life expectancy versus roughly the 25th percentile for Grade A. Figure 2 shows the same ordering for PM2.5, but the differences are much smaller. Every grade falls above the 70th percentile, which likely reflects poor air quality across Los Angeles county as a whole. Together, the results from these figures suggest that the effects of redlining persist nearly a century later. Neighborhoods rated worse than others were historically denied investment within the community, which made them targets for more highways and industrial land uses. It is important to consider that these averages show association rather than causation, and they do not explicitly show the variation within each grade.
 
 
 ## Part 2. Legacy of redlining in pedstrian and bike accidents
-
-
 ```{r}
 #| echo: true
 #| warning: false
@@ -380,7 +374,6 @@ crash_filtered <- crashes |>
   st_transform(st_crs(map_inequal_transform))
 ```
 
-
 ```{r}
 # Check to see if coordinate system matches
 st_crs(crash_filtered) == st_crs(map_inequal_transform)
@@ -393,12 +386,10 @@ if (st_crs(map_inequal_transform) == st_crs(crash_filtered)) {
 }
 ```
 
-
 ```{r}
 # Join datasets
 joined_crash_inequal <- st_join(crash_filtered, map_inequal_transform)
 ```
-
 
 ```{r}
 # Create new DataFrame
@@ -428,7 +419,6 @@ plot_crash_inequal <- joined_crash_inequal |>
   mutate(TOTAL_PCT = TOTAL / sum(TOTAL) * 100)
 ```
 
-
 ```{r}
 #| fig-width: 8
 #| fig-height: 7
@@ -447,17 +437,13 @@ ggplot(plot_crash_inequal, aes(x = grade, y = TOTAL_PCT, fill = grade)) +
 
   # Customizing titles
   labs(
-    title = "Bike and Pedestrian Incidents by HOLC Grade",
-    subtitle = "In Los Angeles County (2020–2025)",
+    title = "Bike and Pedestrian Incidents by HOLC Grade in LA County (2020–2025)",
+    subtitle = "Figure 4",
     x = "Home Owners’ Loan Corporation Grade",
     y = "Percent (%)",
     fill = "HOLC Grade"
   )
 ```
 
-
-
-
-
-
-
+Analysis: 
+Figure 4 shows a clear disparity in bike and pedestrian crashes, including fatal crashes, across HOLC grades. Of all bike and pedestrian crashes recorded within HOLC-graded areas of Los Angeles County from 2020 to 2025, roughly 86% occurred in Grade C and D neighborhoods, while just over 2% occurred in Grade A neighborhoods. This pattern aligns with the long-term effects of redlining, where neighborhoods that were poorly rated were denied funds for community investment, which resulted in inadequate infrastructure such as sidewalks, crosswalks, and bike lanes. As a result, residents of historically redlined neighborhoods face greater danger while partaking in simple everyday activities such as walking or riding a bike. Based on this analysis, further research into infrastructure and traffic conditions in these neighborhoods could support targeted safety investments. 
