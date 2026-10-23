@@ -1,4 +1,4 @@
-# Exploring Patterns of Environmental Justice
+# Exploring Patterns of Environmental Justice in Los Angeles County
 
 ![](images/EDS223.png)
 
@@ -9,7 +9,7 @@
 
 ## Purpose of this Repository
 
-This repository contains Homework 1 for EDS 223: Geospatial Analysis & Remote Sensing. The analysis explores the legacy of historical redlining in Los Angeles using Home Owners’ Loan Corporation (HOLC) grade designations. First, it combines HOLC data with the EPA’s EJScreen data at the census block group level to examine how redlining relates to present-day environmental justice conditions. Second, it uses pedestrian and bicycle crash and fatality data from the California Highway Patrol’s Statewide Integrated Traffic Records System (SWITRS) from 2020 to 2025, producing maps that show their spatial relationship to historical HOLC grades.
+This repository contains Homework 2 for EDS 223: Geospatial Analysis & Remote Sensing. The analysis explores the legacy of historical redlining in Los Angeles using Home Owners’ Loan Corporation (HOLC) grade designations. First, it combines HOLC data with the EPA’s EJScreen data at the census block group level to examine how redlining relates to present-day environmental justice conditions. Second, it uses pedestrian and bicycle crash and fatality data from the California Highway Patrol’s Statewide Integrated Traffic Records System (SWITRS) from 2020 to 2025, producing maps that show their spatial relationship to historical HOLC grades.
 
 
 ## Package Dependencies
@@ -49,7 +49,7 @@ The `images` folder contains images that were used for the README and results se
 
 ## Results
 
-![](images/HOLC.png)
+![](images/HOLC1.png)
 
 
 ## Data Information/Access

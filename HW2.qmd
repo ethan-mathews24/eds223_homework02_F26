@@ -119,8 +119,11 @@ tm_shape(map_inequal_transform) +
   tm_polygons(
     fill = "grade",
     lwd = 0.2,
-    fill.legend = tm_legend(title = "Redline Grade"),
-    fill.scale = tm_scale(values = colors_HOLC)
+    fill.legend = tm_legend(title = "Redline Grade", orientation = 'landscape'),
+    fill.scale = tm_scale_categorical(
+      labels = c('A - Best', 'B - Desirable', 'C - Declining', 'D - Hazardous'),
+      values = colors_HOLC
+    )
   ) +
 
   # Adding an appropriate basemap
@@ -344,7 +347,6 @@ crash_filtered <- crashes |>
   select(
     COLLISION_DATE,
     BICYCLE_ACCIDENT,
-    COLLISION_DATE,
     POINT_X,
     POINT_Y,
     ACCIDENT_YEAR,
@@ -382,9 +384,6 @@ crash_filtered <- crashes |>
 ```
 
 ```{r}
-# Check to see if coordinate system matches
-st_crs(crash_filtered) == st_crs(map_inequal_transform)
-
 # Check to see CRS's match
 if (st_crs(map_inequal_transform) == st_crs(crash_filtered)) {
   print("it's a match!")
