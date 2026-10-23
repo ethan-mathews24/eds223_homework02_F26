@@ -415,9 +415,7 @@ plot_crash_inequal <- joined_crash_inequal |>
   summarize(
     TOTAL = sum(
       PEDESTRIAN_ACCIDENT == "Y",
-      BICYCLE_ACCIDENT == "Y",
-      as.integer(COUNT_PED_KILLED) != 0,
-      as.integer(COUNT_BICYCLIST_KILLED) != 0
+      BICYCLE_ACCIDENT == "Y"
     ),
     na.rm = TRUE
   ) |>
