@@ -414,7 +414,9 @@ plot_crash_inequal <- joined_crash_inequal |>
   summarize(
     TOTAL = sum(
       PEDESTRIAN_ACCIDENT == "Y",
-      BICYCLE_ACCIDENT == "Y"
+      BICYCLE_ACCIDENT == "Y",
+      as.integer(COUNT_PED_KILLED) != 0,
+      as.integer(COUNT_BICYCLIST_KILLED) != 0
     ),
     na.rm = TRUE
   ) |>
@@ -441,7 +443,7 @@ ggplot(plot_crash_inequal, aes(x = grade, y = TOTAL_PCT, fill = grade)) +
 
   # Customizing titles
   labs(
-    title = "Bike and Pedestrian Incidents and Fatalities by HOLC Grade (2020–2025)",
+    title = "Bike and Pedestrian Crashes and Fatalities by HOLC Grade (2020–2025)",
     subtitle = "Figure 4",
     x = "Home Owners’ Loan Corporation Grade",
     y = "Percent (%)",
