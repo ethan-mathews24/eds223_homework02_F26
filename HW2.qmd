@@ -1,6 +1,6 @@
 ---
 title: "Homework #2 for Geospatial Analysis & Remote Sensing (EDS223 - Fall 2026)"
-date: 10-23-2026
+date: 11-09-2026
 format:
   pdf:
     toc: false
@@ -11,6 +11,11 @@ execute:
   message: false
   results: hide
 ---
+
+
+Memo for Resubmission: 
+
+In response to the gradescope comment, I revised the final crash plot by adding the total sum of fatality counts into the accident and fatality total by HOLC grade. The instructions required plotting the percentage of bicycle and pedestrian crashes and fatalities within each HOLC grade, but my original submission did not include the sum of fatalities. For the resubmission, I added the sum of fatalities incidents to the new `TOTAL` column, which recalculated the percentages for each HOLC grade.
 
 
 ```{r}
@@ -416,9 +421,9 @@ plot_crash_inequal <- joined_crash_inequal |>
       PEDESTRIAN_ACCIDENT == "Y",
       BICYCLE_ACCIDENT == "Y",
       as.integer(COUNT_PED_KILLED) != 0,
-      as.integer(COUNT_BICYCLIST_KILLED) != 0
-    ),
-    na.rm = TRUE
+      as.integer(COUNT_BICYCLIST_KILLED) != 0,
+      na.rm = TRUE
+    )
   ) |>
 
   # Turn total into a percent for each grade
